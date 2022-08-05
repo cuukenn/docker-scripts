@@ -1,6 +1,4 @@
 #!/bin/sh
-# 报错退出
-set -e
 # 脚本当前目录
 CURRENT_DIR=$(cd $(dirname $0); pwd)
 docker run \
