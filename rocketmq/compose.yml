@@ -22,17 +22,8 @@ services:
       - ${HOME}/.docker/cust-data/rocketmq/logs:/root/logs
       - ${HOME}/.docker/cust-data/rocketmq/store:/root/store
       - ./config/broker.conf:/opt/rocketmq-4.3.2/conf/broker.conf
+    hostname: rocketmq.middleware-service.local
     command: sh mqbroker  -c /opt/rocketmq-4.3.2/conf/broker.conf
     environment:
       NAMESRV_ADDR: "rmqnamesrv:9876"
-      JAVA_OPT_EXT: "-server -Xms1g -Xms64m -Xmn1g"          
-  rmqconsole:
-    image: styletang/rocketmq-console-ng:1.0.0
-    ports:
-      - 18080:8080
-    depends_on:
-      - rmqnamesrv
-    volumes:
-      - ${HOME}/.docker/cust-data/rocketmq/console/logs:/root/logs
-    environment:
-      JAVA_OPTS: "-Drocketmq.namesrv.addr=rmqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
+      JAVA_OPT_EXT: "-server -Xms1g -Xms64m -Xmn1g"

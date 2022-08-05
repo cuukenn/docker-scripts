@@ -17,4 +17,5 @@
   - 数据持久化保存根目录：${HOME}/.docker/cust-data/
   - start.sh存在则优先使用
   - /bin/sh报错停止运行;/bin/bash报错继续运行
+  - windows编辑sh文件需确定换行符为LF类型
     
