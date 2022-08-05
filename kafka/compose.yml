@@ -1,0 +1,27 @@
+# yaml配置
+version: '3'
+services:
+  kafdrop:
+    image: obsidiandynamics/kafdrop:3.30.0
+    ports:
+      - 9000:9000
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+  zookeeper:
+    image: bitnami/zookeeper:3.7.1
+    ports:
+      - 2181:2181
+    environment:
+      ZOO_ENABLE_AUTH: 'yes'
+  kafka:
+    image: bitnami/kafka:3.1.1
+    depends_on:
+      - zookeeper
+    ports:
+      - 9092:9092
+    volumes:
+      - ${HOME}/.docker/cust-data/kafka:/data/kafka-data
+    hostname: kafka.middleware-service.local
+    environment:
+      KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: 'yes'
