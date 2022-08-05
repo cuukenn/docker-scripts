@@ -1,0 +1,38 @@
+# yaml配置
+version: '3'
+services:
+  rmqnamesrv:
+    image: rocketmqinc/rocketmq:4.3.2
+    ports:
+      - 9876:9876
+    environment:
+    #内存分配
+      JAVA_OPT_EXT: "-server -Xms64m -Xmx1g"
+    volumes:
+      - ${HOME}/.docker/cust-data/rocketmq/logs:/root/logs
+    command: sh mqnamesrv
+  rmqbroker:
+    image: rocketmqinc/rocketmq:4.3.2
+    depends_on:
+      - rmqnamesrv
+    ports:
+      - 10909:10909
+      - 10911:10911
+    volumes:
+      - ${HOME}/.docker/cust-data/rocketmq/logs:/root/logs
+      - ${HOME}/.docker/cust-data/rocketmq/store:/root/store
+      - ${CURRENT_DIR}/config/broker.conf:/opt/rocketmq-4.3.2/conf/broker.conf
+    command: sh mqbroker  -c /opt/rocketmq-4.3.2/conf/broker.conf
+    environment:
+      NAMESRV_ADDR: "rmqnamesrv:9876"
+      JAVA_OPT_EXT: "-server -Xms1g -Xms64m -Xmn1g"          
+  rmqconsole:
+    image: styletang/rocketmq-console-ng:1.0.0
+    ports:
+      - 18080:8080
+    depends_on:
+      - rmqnamesrv
+    volumes:
+      - ${HOME}/.docker/cust-data/rocketmq/console/logs:/root/logs
+    environment:
+      JAVA_OPTS: "-Drocketmq.namesrv.addr=rmqnamesrv:9876 -Dcom.rocketmq.sendMessageWithVIPChannel=false"
