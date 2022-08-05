@@ -21,7 +21,7 @@ services:
     volumes:
       - ${HOME}/.docker/cust-data/rocketmq/logs:/root/logs
       - ${HOME}/.docker/cust-data/rocketmq/store:/root/store
-      - ${CURRENT_DIR}/config/broker.conf:/opt/rocketmq-4.3.2/conf/broker.conf
+      - ./config/broker.conf:/opt/rocketmq-4.3.2/conf/broker.conf
     command: sh mqbroker  -c /opt/rocketmq-4.3.2/conf/broker.conf
     environment:
       NAMESRV_ADDR: "rmqnamesrv:9876"
